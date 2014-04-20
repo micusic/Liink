@@ -16,10 +16,11 @@ function prepare(){
 	addBlocks();
 	arrangeBlocks();
 	colorBlocks();
+	bindEventsOfBlocks();
 }
 
-var rowNo = 2;
-var colNo = 2;
+var rowNo = 4;
+var colNo = 4;
 var areaTop = 100;
 var areaLeft = 20;
 var blockMargin = 10;
@@ -65,14 +66,19 @@ function colorBlocks(){
 }
 
 function randomColor(){
-	// var letters = '0123456789ABCDEF'.split('');
- //    var color = '#';
- //    for (var i = 0; i < 6; i++ ) {
- //        color += letters[Math.floor(Math.random() * 16)];
- //    }
- //    return color;
  	var colors = ["lightpink", "lightgreen", "lightskyblue", "orchid", "orange"];
  	return colors[Math.floor(Math.random() * 5)]
 }
 
+function bindEventsOfBlocks(){
+	$(".block").on("click", blockClick);
+}
+
+function blockClick(){
+	if ($(this).hasClass('selected')) {
+		$(this).removeClass('selected');
+	} else{
+		$(this).addClass('selected');
+	};
+} 
 	// $("#11").addClass('block');
