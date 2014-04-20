@@ -47,19 +47,32 @@ function arrangeBlocks(){
 }
 
 function colorBlocks(){
+	blockIds = new Array();
 	for (var i = 1; i <= rowNo; i++) {
 		for (var j = 1; j <= colNo; j++) {
-			$("#" + i + j).css("background-color",randomColor());		
+			blockIds.push("#"+i+j);		
 		};
 	};
+	while(blockIds.length>0){
+		var c = randomColor();
+		var randomNo = Math.floor(Math.random() * blockIds.length);
+		$(blockIds[randomNo]).css("background-color",c);		
+		blockIds.splice(randomNo, 1);
+		randomNo = Math.floor(Math.random() * blockIds.length);
+		$(blockIds[randomNo]).css("background-color",c);		
+		blockIds.splice(randomNo, 1);
+	};	
 }
 
 function randomColor(){
-	var letters = '0123456789ABCDEF'.split('');
-    var color = '#';
-    for (var i = 0; i < 6; i++ ) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
+	// var letters = '0123456789ABCDEF'.split('');
+ //    var color = '#';
+ //    for (var i = 0; i < 6; i++ ) {
+ //        color += letters[Math.floor(Math.random() * 16)];
+ //    }
+ //    return color;
+ 	var colors = ["lightpink", "lightgreen", "lightskyblue", "orchid", "orange"];
+ 	return colors[Math.floor(Math.random() * 5)]
 }
+
 	// $("#11").addClass('block');
