@@ -15,6 +15,7 @@ function reset(){
 function prepare(){
 	addBlocks();
 	arrangeBlocks();
+	colorBlocks();
 }
 
 var rowNo = 2;
@@ -40,7 +41,25 @@ function arrangeBlocks(){
 		for (var j = 1; j <= colNo; j++) {
 			var top = areaTop + i*blockMargin + (i-1)*blockSize;
 			var left = areaLeft + j*blockMargin + (j-1)*blockSize;
-			$("#" + i.toString() + j.toString()).css("top",top + "px").css("left",left + "px");		
+			$("#" + i + j).css("top",top).css("left",left);		
 		};
 	};
 }
+
+function colorBlocks(){
+	for (var i = 1; i <= rowNo; i++) {
+		for (var j = 1; j <= colNo; j++) {
+			$("#" + i + j).css("background-color",randomColor());		
+		};
+	};
+}
+
+function randomColor(){
+	var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+	// $("#11").addClass('block');
