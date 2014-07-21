@@ -5,11 +5,12 @@ $(document).ready(function(){
 	// alert("Welcome to Liink!");
 
 	//bind events
-	$("button").click(reset);
+	$("#reset").click(reset);
 });
 
 function reset(){	
-	alert("Reset");
+	$(".block").remove();
+	prepare();
 }
 
 function prepare(){
@@ -20,11 +21,13 @@ function prepare(){
 }
 
 var rowNo = 4;
-var colNo = 4;
+var colNo = 4	;
 var areaTop = 100;
 var areaLeft = 20;
 var blockMargin = 10;
 var blockSize = 60;
+var firstBlock = null;
+var secondBlock = null;
 
 function addBlocks(){
 	for (var i = 1; i <= rowNo; i++) {
@@ -75,10 +78,60 @@ function bindEventsOfBlocks(){
 }
 
 function blockClick(){
-	if ($(this).hasClass('selected')) {
-		$(this).removeClass('selected');
-	} else{
-		$(this).addClass('selected');
-	};
+	if(firstBlock === null && secondBlock === null) {
+		firstBlock = $(this);
+		selectBlock(firstBlock);
+	}
+	else if(firstBlock !== null && secondBlock === null) {
+		secondBlock = $(this);
+		selectBlock(secondBlock);
+	}
+	else{
+		alert("OMG, this cannot happen!")
+	}
+
+	if(firstBlock !== null && secondBlock !== null) {
+		tryToLiink();	
+	}
 } 
-	// $("#11").addClass('block');
+
+function tryToLiink () {
+	if (isSame()){
+		killBlocks();
+	}
+	releaseBlocks();	
+}
+
+function isSame () {
+	return firstBlock.css("background-color") === secondBlock.css("background-color");
+}
+
+function killBlocks () {
+	console.log(firstBlock);
+	console.log(secondBlock);
+	unColor(firstBlock);
+	unColor(secondBlock);
+	unselect(firstBlock);
+	unselect(secondBlock);
+	firstBlock = null;
+	secondBlock = null;
+}
+
+function unColor (block) {
+	block.css("background-color", "white");
+}
+
+function unselect (block) {
+	block.removeClass('selected');
+}
+
+function selectBlock (block) {
+	block.addClass('selected');
+}
+
+function releaseBlocks () {
+	unselect(firstBlock);
+	unselect(secondBlock);
+	firstBlock = null;
+	secondBlock = null;
+}
