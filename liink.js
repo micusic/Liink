@@ -78,6 +78,9 @@ function bindEventsOfBlocks(){
 }
 
 function blockClick(){
+    if (isSilver($(this))){
+        return;
+    }
 	if(firstBlock === null && secondBlock === null) {
 		firstBlock = $(this);
 		selectBlock(firstBlock);
@@ -87,7 +90,8 @@ function blockClick(){
 		selectBlock(secondBlock);
 	}
 	else{
-		alert("OMG, this cannot happen!")
+		alert("OMG, this cannot happen!");
+        releaseBlocks();
 	}
 
 	if(firstBlock !== null && secondBlock !== null) {
@@ -96,19 +100,93 @@ function blockClick(){
 } 
 
 function tryToLiink () {
-	if (isSame()){
-		killBlocks();
+    blockList = canBeKilled();
+	if (blockList.length !== 0){
+		killBlocks(blockList);
 	}
 	releaseBlocks();	
 }
 
-function isSame () {
-	return firstBlock.css("background-color") === secondBlock.css("background-color");
+function canBeKilled () {
+	if (firstBlock.css("background-color") !== secondBlock.css("background-color")){
+        return false;
+    }
+    return isLiink(firstBlock, secondBlock, []);
 }
 
-function killBlocks () {
+function isSilver(block) {
+    return block.css("background-color") === "rgb(192, 192, 192)";
+}
+function isLiink(block, targetBlock, blockList) {
+    if(blockList.length !== 0 && blockList.indexOf(block.attr("id")) !== -1){
+        return [];
+    }
+    blockList.push(block.attr("id"));
+    if (isAround(block,targetBlock)){
+        return blockList;
+    }
+    if (isSilver(getUpBlock(block)) && isLiink(getUpBlock(block),targetBlock,blockList) !== 0){
+        return blockList;
+    }
+    if (isSilver(getDownBlock(block)) && isLiink(getDownBlock(block),targetBlock,blockList) !== 0){
+        return blockList;
+    }
+    if (isSilver(getLeftBlock(block)) && isLiink(getLeftBlock(block),targetBlock,blockList) !== 0){
+        return blockList;
+    }
+    if (isSilver(getRightBlock(block)) && isLiink(getRightBlock(block),targetBlock,blockList) !== 0){
+        return blockList;
+    }
+    return [];
+}
+
+function isAround(block, targetBlock) {
+    if (getUpBlock(block).attr("id") === targetBlock.attr("id")){
+        return true;
+    }
+    if (getDownBlock(block).attr("id") === targetBlock.attr("id")){
+        return true;
+    }
+    if (getLeftBlock(block).attr("id") === targetBlock.attr("id")){
+        return true;
+    }
+    if (getRightBlock(block).attr("id") === targetBlock.attr("id")){
+        return true;
+    }
+    return false;
+}
+
+function getUpBlock(block) {
+    id = block.attr("id");
+    newId = id - 10;
+    return $("#"+newId);
+}
+
+
+function getDownBlock(block) {
+    id = block.attr("id");
+    newId = id - (-10);
+    return $("#"+newId);
+}
+
+
+function getLeftBlock(block) {
+    id = block.attr("id");
+    newId = id - 1;
+    return $("#"+newId);
+}
+
+
+function getRightBlock(block) {
+    id = block.attr("id");
+    newId = id - (-1);
+    return $("#"+newId);
+}
+
+function killBlocks (blockList) {
 	console.log(firstBlock);
 	console.log(secondBlock);
+    console.log(blockList);
 	unColor(firstBlock);
 	unColor(secondBlock);
 	unselect(firstBlock);
@@ -118,7 +196,7 @@ function killBlocks () {
 }
 
 function unColor (block) {
-	block.css("background-color", "white");
+	block.css("background-color", "silver");
 }
 
 function unselect (block) {
