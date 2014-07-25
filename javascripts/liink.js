@@ -109,7 +109,7 @@ function tryToLiink () {
 
 function canBeKilled () {
 	if (firstBlock.css("background-color") !== secondBlock.css("background-color")){
-        return false;
+        return [];
     }
     return isLiink(firstBlock, secondBlock, []);
 }
@@ -125,18 +125,19 @@ function isLiink(block, targetBlock, blockList) {
     if (isAround(block,targetBlock)){
         return blockList;
     }
-    if (isSilver(getUpBlock(block)) && isLiink(getUpBlock(block),targetBlock,blockList) !== 0){
+    if (isSilver(getUpBlock(block)) && isLiink(getUpBlock(block),targetBlock,blockList).length !== 0){
         return blockList;
     }
-    if (isSilver(getDownBlock(block)) && isLiink(getDownBlock(block),targetBlock,blockList) !== 0){
+    if (isSilver(getDownBlock(block)) && isLiink(getDownBlock(block),targetBlock,blockList).length !== 0){
         return blockList;
     }
-    if (isSilver(getLeftBlock(block)) && isLiink(getLeftBlock(block),targetBlock,blockList) !== 0){
+    if (isSilver(getLeftBlock(block)) && isLiink(getLeftBlock(block),targetBlock,blockList).length !== 0){
         return blockList;
     }
-    if (isSilver(getRightBlock(block)) && isLiink(getRightBlock(block),targetBlock,blockList) !== 0){
+    if (isSilver(getRightBlock(block)) && isLiink(getRightBlock(block),targetBlock,blockList).length !== 0){
         return blockList;
     }
+    blockList.pop();
     return [];
 }
 
