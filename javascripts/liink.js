@@ -184,15 +184,12 @@ function getRightBlock(block) {
 }
 
 function killBlocks (blockList) {
-	console.log(firstBlock);
-	console.log(secondBlock);
-    console.log(blockList);
-	unColor(firstBlock);
-	unColor(secondBlock);
-	unselect(firstBlock);
-	unselect(secondBlock);
-	firstBlock = null;
-	secondBlock = null;
+//	console.log(firstBlock);
+//	console.log(secondBlock);
+//    console.log(blockList);
+    blockList.push(secondBlock.attr("id"));
+    colorLine(blockList);
+    sleep(500,function() {unColorLine(blockList)});
 }
 
 function unColor (block) {
@@ -212,4 +209,28 @@ function releaseBlocks () {
 	unselect(secondBlock);
 	firstBlock = null;
 	secondBlock = null;
+}
+
+function sleep(millis, callback) {
+    setTimeout(function()
+        { callback(); }
+        , millis);
+}
+
+function colorLine(blockList){
+    for(i=0;i<blockList.length;i++){
+        $("#"+blockList[i]).css("background-color", "red");
+    }
+}
+
+function unColorLine(blockList){
+    for(i=0;i<blockList.length;i++){
+        $("#"+blockList[i]).css("background-color", "silver");
+    }
+//    unColor(firstBlock);
+//    unColor(secondBlock);
+//    unselect(firstBlock);
+//    unselect(secondBlock);
+//    firstBlock = null;
+//    secondBlock = null;
 }
