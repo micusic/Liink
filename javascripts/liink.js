@@ -100,10 +100,12 @@ function blockClick(){
 } 
 
 function tryToLiink () {
-    blockList = canBeKilled();
-	if (blockList.length !== 0){
-		killBlocks(blockList);
-	}
+    if (firstBlock.attr("id") !== secondBlock.attr("id")) {
+        blockList = canBeKilled();
+        if (blockList.length !== 0) {
+            killBlocks(blockList);
+        }
+    }
 	releaseBlocks();	
 }
 
@@ -111,34 +113,65 @@ function canBeKilled () {
 	if (firstBlock.css("background-color") !== secondBlock.css("background-color")){
         return [];
     }
-    return isLiink(firstBlock, secondBlock, []);
+    return isLiink(firstBlock, secondBlock, [], [], 0);
 }
 
 function isSilver(block) {
     return block.css("background-color") === "rgb(192, 192, 192)";
 }
-function isLiink(block, targetBlock, blockList) {
-    if(blockList.length !== 0 && blockList.indexOf(block.attr("id")) !== -1){
+function isDirectionChanged(direction, turns) {
+    if (direction !== 0) {
+        lastDirection = turns[turns.length - 1];
+        if (lastDirection !== direction) {
+            return true;
+        }
+    }
+    return false;
+}
+function isLiink(block, targetBlock, blockList, turns, direction) {
+    if(blockList.length > (rowNo+colNo)*1.5){
         return [];
     }
+    var directionChanged = isDirectionChanged(direction, turns);
+    if (directionChanged === true) {
+        turns.push(direction);
+    }
+
+    if(turns.length > 3){
+        turns.pop();
+        return [];
+    }
+
     blockList.push(block.attr("id"));
+
     if (isAround(block,targetBlock)){
         return blockList;
     }
-    if (isSilver(getUpBlock(block)) && isLiink(getUpBlock(block),targetBlock,blockList).length !== 0){
+    var nextBlock = getUpBlock(block);
+    if (isSilver(nextBlock) && isNotInList(nextBlock, blockList) && isLiink(nextBlock, targetBlock, blockList, turns, 1).length !== 0){
         return blockList;
     }
-    if (isSilver(getDownBlock(block)) && isLiink(getDownBlock(block),targetBlock,blockList).length !== 0){
+    nextBlock = getDownBlock(block);
+    if (isSilver(nextBlock) && isNotInList(nextBlock, blockList) && isLiink(nextBlock, targetBlock, blockList, turns, 2).length !== 0){
         return blockList;
     }
-    if (isSilver(getLeftBlock(block)) && isLiink(getLeftBlock(block),targetBlock,blockList).length !== 0){
+    nextBlock = getLeftBlock(block);
+    if (isSilver(nextBlock) && isNotInList(nextBlock, blockList) && isLiink(nextBlock, targetBlock, blockList, turns, 3).length !== 0){
         return blockList;
     }
-    if (isSilver(getRightBlock(block)) && isLiink(getRightBlock(block),targetBlock,blockList).length !== 0){
+    nextBlock = getRightBlock(block);
+    if (isSilver(nextBlock) && isNotInList(nextBlock, blockList) && isLiink(nextBlock, targetBlock, blockList, turns, 4).length !== 0){
         return blockList;
+    }
+    if (directionChanged === true) {
+        turns.pop();
     }
     blockList.pop();
     return [];
+}
+
+function isNotInList(block, blockList) {
+    return blockList.length === 0 || blockList.indexOf(block.attr("id")) === -1
 }
 
 function isAround(block, targetBlock) {
