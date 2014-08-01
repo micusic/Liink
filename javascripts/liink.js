@@ -20,8 +20,8 @@ function prepare(){
 	bindEventsOfBlocks();
 }
 
-var rowNo = 4;
-var colNo = 4;
+var rowNo = 8;
+var colNo = 8;
 var areaTop = 100;
 var areaLeft = 20;
 var blockMargin = 10;
