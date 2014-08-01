@@ -144,22 +144,22 @@ function isLiink(block, targetBlock, blockList, turns, direction) {
 
     blockList.push(block.attr("id"));
 
-    if (isAround(block,targetBlock)){
+    if (isNext(block,targetBlock)){
         return blockList;
     }
-    var nextBlock = getUpBlock(block);
+    var nextBlock = getBeighbourBlock(block, 1);
     if (isSilver(nextBlock) && isNotInList(nextBlock, blockList) && isLiink(nextBlock, targetBlock, blockList, turns, 1).length !== 0){
         return blockList;
     }
-    nextBlock = getDownBlock(block);
+    nextBlock = getBeighbourBlock(block, 2);
     if (isSilver(nextBlock) && isNotInList(nextBlock, blockList) && isLiink(nextBlock, targetBlock, blockList, turns, 2).length !== 0){
         return blockList;
     }
-    nextBlock = getLeftBlock(block);
+    nextBlock = getBeighbourBlock(block, 3);
     if (isSilver(nextBlock) && isNotInList(nextBlock, blockList) && isLiink(nextBlock, targetBlock, blockList, turns, 3).length !== 0){
         return blockList;
     }
-    nextBlock = getRightBlock(block);
+    nextBlock = getBeighbourBlock(block, 4);
     if (isSilver(nextBlock) && isNotInList(nextBlock, blockList) && isLiink(nextBlock, targetBlock, blockList, turns, 4).length !== 0){
         return blockList;
     }
@@ -174,46 +174,44 @@ function isNotInList(block, blockList) {
     return blockList.length === 0 || blockList.indexOf(block.attr("id")) === -1
 }
 
+function isNext(block, targetBlock, direction){
+    return isAround(block, targetBlock);
+}
+
 function isAround(block, targetBlock) {
-    if (getUpBlock(block).attr("id") === targetBlock.attr("id")){
+    if (getBeighbourBlock(block, 1).attr("id") === targetBlock.attr("id")) {
         return true;
     }
-    if (getDownBlock(block).attr("id") === targetBlock.attr("id")){
+    if (getBeighbourBlock(block, 2).attr("id") === targetBlock.attr("id")) {
         return true;
     }
-    if (getLeftBlock(block).attr("id") === targetBlock.attr("id")){
+    if (getBeighbourBlock(block, 3).attr("id") === targetBlock.attr("id")) {
         return true;
     }
-    if (getRightBlock(block).attr("id") === targetBlock.attr("id")){
+    if (getBeighbourBlock(block, 4).attr("id") === targetBlock.attr("id")) {
         return true;
     }
     return false;
 }
 
-function getUpBlock(block) {
+function getBeighbourBlock(block,direction){
     id = block.attr("id");
-    newId = id - 10;
-    return $("#"+newId);
-}
-
-
-function getDownBlock(block) {
-    id = block.attr("id");
-    newId = id - (-10);
-    return $("#"+newId);
-}
-
-
-function getLeftBlock(block) {
-    id = block.attr("id");
-    newId = id - 1;
-    return $("#"+newId);
-}
-
-
-function getRightBlock(block) {
-    id = block.attr("id");
-    newId = id - (-1);
+    var relationNumber = 0;
+    switch (direction){
+        case 1:
+            relationNumber = 10;
+            break;
+        case 2:
+            relationNumber = -10;
+            break;
+        case 3:
+            relationNumber = 1;
+            break;
+        case 4:
+            relationNumber = -1;
+            break;
+    }
+    newId = id - relationNumber;
     return $("#"+newId);
 }
 
