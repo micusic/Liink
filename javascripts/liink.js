@@ -20,8 +20,8 @@ function prepare(){
 	bindEventsOfBlocks();
 }
 
-var rowNo = 8;
-var colNo = 8;
+var rowNo = 4;
+var colNo = 4;
 var areaTop = 100;
 var areaLeft = 20;
 var blockMargin = 10;
@@ -144,7 +144,7 @@ function isLiink(block, targetBlock, blockList, turns, direction) {
 
     blockList.push(block.attr("id"));
 
-    if (isNext(block,targetBlock)){
+    if (isNext(block, targetBlock, direction, turns.length)){
         return blockList;
     }
     var nextBlock = getBeighbourBlock(block, 1);
@@ -174,8 +174,16 @@ function isNotInList(block, blockList) {
     return blockList.length === 0 || blockList.indexOf(block.attr("id")) === -1
 }
 
-function isNext(block, targetBlock, direction){
-    return isAround(block, targetBlock);
+function isNext(block, targetBlock, direction, turns){
+    if(direction === 0){
+        return isAround(block, targetBlock);
+    }
+    if(3 === turns){
+        return getBeighbourBlock(block, direction).attr("id") === targetBlock.attr("id");
+    }
+    if(turns < 3){
+        return isAround(block, targetBlock);
+    }
 }
 
 function isAround(block, targetBlock) {
@@ -236,11 +244,23 @@ function selectBlock (block) {
 	block.addClass('selected');
 }
 
+function isClear() {
+    for (var i = 1; i <= rowNo; i++) {
+        for (var j = 1; j <= colNo; j++) {
+            if($("#" + i + j).css("background-color") !== "rgb(192, 192, 192)"
+                && $("#" + i + j).css("background-color") !== "rgb(255, 0, 0)"){
+                return;
+            }
+        };
+    };
+    alert("U R Amazing!!!");
+}
 function releaseBlocks () {
 	unselect(firstBlock);
 	unselect(secondBlock);
 	firstBlock = null;
 	secondBlock = null;
+    isClear();
 }
 
 function sleep(millis, callback) {
