@@ -78,7 +78,7 @@ function bindEventsOfBlocks(){
 }
 
 function blockClick(){
-    if (isSilver($(this))){
+    if (canPass($(this))){
         return;
     }
 	if(firstBlock === null && secondBlock === null) {
@@ -116,9 +116,10 @@ function canBeKilled () {
     return isLiink(firstBlock, secondBlock, [], [], 0);
 }
 
-function isSilver(block) {
-    return block.css("background-color") === "rgb(192, 192, 192)";
+function canPass(block) {
+    return block.css("background-color") === "rgba(0, 0, 0, 0)";
 }
+
 function isDirectionChanged(direction, turns) {
     if (direction !== 0) {
         lastDirection = turns[turns.length - 1];
@@ -148,19 +149,19 @@ function isLiink(block, targetBlock, blockList, turns, direction) {
         return blockList;
     }
     var nextBlock = getBeighbourBlock(block, 1);
-    if (isSilver(nextBlock) && isNotInList(nextBlock, blockList) && isLiink(nextBlock, targetBlock, blockList, turns, 1).length !== 0){
+    if (canPass(nextBlock) && isNotInList(nextBlock, blockList) && isLiink(nextBlock, targetBlock, blockList, turns, 1).length !== 0){
         return blockList;
     }
     nextBlock = getBeighbourBlock(block, 2);
-    if (isSilver(nextBlock) && isNotInList(nextBlock, blockList) && isLiink(nextBlock, targetBlock, blockList, turns, 2).length !== 0){
+    if (canPass(nextBlock) && isNotInList(nextBlock, blockList) && isLiink(nextBlock, targetBlock, blockList, turns, 2).length !== 0){
         return blockList;
     }
     nextBlock = getBeighbourBlock(block, 3);
-    if (isSilver(nextBlock) && isNotInList(nextBlock, blockList) && isLiink(nextBlock, targetBlock, blockList, turns, 3).length !== 0){
+    if (canPass(nextBlock) && isNotInList(nextBlock, blockList) && isLiink(nextBlock, targetBlock, blockList, turns, 3).length !== 0){
         return blockList;
     }
     nextBlock = getBeighbourBlock(block, 4);
-    if (isSilver(nextBlock) && isNotInList(nextBlock, blockList) && isLiink(nextBlock, targetBlock, blockList, turns, 4).length !== 0){
+    if (canPass(nextBlock) && isNotInList(nextBlock, blockList) && isLiink(nextBlock, targetBlock, blockList, turns, 4).length !== 0){
         return blockList;
     }
     if (directionChanged === true) {
@@ -233,7 +234,7 @@ function killBlocks (blockList) {
 }
 
 function unColor (block) {
-	block.css("background-color", "silver");
+	block.css("background-color", "rgba(0, 0, 0, 0)");
 }
 
 function unselect (block) {
@@ -247,7 +248,7 @@ function selectBlock (block) {
 function isClear() {
     for (var i = 1; i <= rowNo; i++) {
         for (var j = 1; j <= colNo; j++) {
-            if($("#" + i + j).css("background-color") !== "rgb(192, 192, 192)"
+            if($("#" + i + j).css("background-color") !== "rgba(0, 0, 0, 0)"
                 && $("#" + i + j).css("background-color") !== "rgb(255, 0, 0)"){
                 return;
             }
@@ -277,7 +278,7 @@ function colorLine(blockList){
 
 function unColorLine(blockList){
     for(i=0;i<blockList.length;i++){
-        $("#"+blockList[i]).css("background-color", "silver");
+        $("#"+blockList[i]).css("background-color", "rgba(0, 0, 0, 0)");
     }
 //    unColor(firstBlock);
 //    unColor(secondBlock);
