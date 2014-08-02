@@ -252,7 +252,7 @@ function isClear() {
     for (var i = 1; i <= rowNo; i++) {
         for (var j = 1; j <= colNo; j++) {
             if($("#" + i + j).css("background-color") !== "rgba(0, 0, 0, 0)"
-                && $("#" + i + j).css("background-color") !== "rgb(255, 0, 0)"){
+                && $("#" + i + j).css("background-color") !== "rgb(192, 192, 192)"){
                 return;
             }
         };
