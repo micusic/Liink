@@ -20,8 +20,8 @@ function prepare(){
 	bindEventsOfBlocks();
 }
 
-var rowNo = 8;
-var colNo = 8;
+var rowNo = 6;
+var colNo = 6;
 var areaTop = 100;
 var areaLeft = 20;
 var blockMargin = 10;
@@ -30,8 +30,8 @@ var firstBlock = null;
 var secondBlock = null;
 
 function addBlocks(){
-	for (var i = 1; i <= rowNo; i++) {
-		for (var j = 1; j <= colNo; j++) {
+	for (var i = 0; i <= rowNo + 1; i++) {
+		for (var j = 0; j <= colNo + 1; j++) {
 			var block=document.createElement("block");
 			block.id = i.toString() + j.toString();
 			block.className = "block";
@@ -41,8 +41,8 @@ function addBlocks(){
 }
 
 function arrangeBlocks(){
-	for (var i = 1; i <= rowNo; i++) {
-		for (var j = 1; j <= colNo; j++) {
+	for (var i = 0; i <= rowNo+1; i++) {
+		for (var j = 0; j <= colNo+1; j++) {
 			var top = areaTop + i*blockMargin + (i-1)*blockSize;
 			var left = areaLeft + j*blockMargin + (j-1)*blockSize;
 			$("#" + i + j).css("top",top).css("left",left);		
@@ -221,6 +221,9 @@ function getBeighbourBlock(block,direction){
             break;
     }
     newId = id - relationNumber;
+    if(newId<10){
+        newId = "0" + newId;
+    }
     return $("#"+newId);
 }
 
@@ -230,7 +233,7 @@ function killBlocks (blockList) {
 //    console.log(blockList);
     blockList.push(secondBlock.attr("id"));
     colorLine(blockList);
-    sleep(500,function() {unColorLine(blockList)});
+    sleep(200,function() {unColorLine(blockList)});
 }
 
 function unColor (block) {
@@ -272,7 +275,7 @@ function sleep(millis, callback) {
 
 function colorLine(blockList){
     for(i=0;i<blockList.length;i++){
-        $("#"+blockList[i]).css("background-color", "red");
+        $("#"+blockList[i]).css("background-color", "silver");
     }
 }
 
