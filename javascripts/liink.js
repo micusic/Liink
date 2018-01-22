@@ -69,8 +69,8 @@ function colorBlocks(){
 }
 
 function randomColor(){
- 	var colors = ["lightpink", "lightgreen", "lightskyblue", "orchid", "orange"];
- 	return colors[Math.floor(Math.random() * 5)]
+        var colors = ["lightpink", "lightgreen", "lightskyblue", "orchid", "orange", "bisque", "brown", "darkslateblue", "deeppink", "green"];
+        return colors[Math.floor(Math.random() * colors.length)]
 }
 
 function bindEventsOfBlocks(){
